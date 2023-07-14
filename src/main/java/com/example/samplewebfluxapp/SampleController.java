@@ -1,6 +1,7 @@
 package com.example.samplewebfluxapp;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -18,7 +19,8 @@ public class SampleController {
 	@Bean
 	public RouterFunction<ServerResponse> routes() {
 		return route(GET("/f/hello"), this::hello)
-				.andRoute(GET("/f/hello2"), this::hello2);
+				.andRoute(GET("/f/hello2"), this::hello2)
+				.andRoute(GET("/f/flux2"), this::flux2);
 	}
 
 	Mono<ServerResponse> hello(ServerRequest req) {
@@ -32,5 +34,9 @@ public class SampleController {
 	@RequestMapping("/f/flux")
 	Mono<Rendering> flux() {
 		return Mono.just(Rendering.view("flux").build());
+	}
+
+	Mono<ServerResponse> flux2(ServerRequest req) {
+		return ok().contentType(MediaType.TEXT_HTML).render("flux");
 	}
 }
